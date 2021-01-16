@@ -16,6 +16,11 @@ sqs = boto3.client('sqs', region_name='eu-west-2')
 
 queue_url = 'https://sqs.eu-west-2.amazonaws.com/665859541710/TrumpBotQueue'
 
+#purge current queue
+sqs.purge_queue(
+    QueueUrl=queue_url
+)
+
 ROOT = Path(__file__).resolve().parents[0]
 
 chunk_count = 1
@@ -84,7 +89,7 @@ def gen_tweet():
 
 
 if __name__ == '__main__':
-    for i in range(2):
+    for i in range(24):
         sqs.send_message(
             QueueUrl=queue_url,
             MessageBody=(gen_tweet())
