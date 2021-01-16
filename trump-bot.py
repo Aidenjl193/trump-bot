@@ -71,20 +71,20 @@ def gen_tweet():
             cur_ids = torch.cat((cur_ids, next_token), dim=1)
 
             if next_token in tokenizer.encode('<|endoftext|>'):
-                tweet_finished = True
                 break
         
-        if tweet_finished:
-            output_list = list(cur_ids.squeeze().to('cpu').numpy())
-            output_text = tokenizer.decode(output_list).split("TWEET:")[-1]
-            output_text = re.sub(r"http\S+", "", output_text).replace('<|endoftext|>', '')
-            if(len(output_text) > 140):
-                return gen_tweet()
-            return(output_text)
+    output_list = list(cur_ids.squeeze().to('cpu').numpy())
+    output_text = tokenizer.decode(output_list).split("TWEET:")[-1]
+    output_text = re.sub(r"http\S+", "", output_text).replace('<|endoftext|>', '')
+
+    if(len(output_text) > 140 or len(output_text) == 0):
+        return gen_tweet()
+
+    return(output_text)
 
 
 if __name__ == '__main__':
-    for i in range(24):
+    for i in range(2):
         sqs.send_message(
             QueueUrl=queue_url,
             MessageBody=(gen_tweet())
