@@ -1,0 +1,7 @@
+tweepy==3.9.0
+requests
+oauthlib
+requests_oauthlib
+pyjwt==1.7.1
+blinker==1.4
+cryptography>=1.4.0
